@@ -1,23 +1,19 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
-
-// any CSS you import will output into a single css file (app.css in this case)
-//import './css/app.css';
-
-// start the Stimulus application
-//import './bootstrap';
-
-
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import '../css/app.css';
-import Home from './components/Home';
+import {DefaultLayout} from "./components/layouts/default/DefaultLayout";
+import {Home} from './components/pages/Home';
+import {ExchangeRates} from "./components/pages/ExchangeRates";
 
-ReactDOM.render(<Router><Home /></Router>, document.getElementById('root'));
+ReactDOM.render(
+    <Router>
+        <Switch>
+            <DefaultLayout>
+                <Route path="/" component={Home}/>
+                <Route path="/kursy-walut" component={ExchangeRates}/>
+            </DefaultLayout>
+        </Switch>
+    </Router>, document.getElementById('root')
+);
 

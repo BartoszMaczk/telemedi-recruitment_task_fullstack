@@ -1,0 +1,13 @@
+.txtRegular {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #FFF7D4;
+}
+
+.txtRegular a {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    color: inherit;
+}
