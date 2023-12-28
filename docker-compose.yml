@@ -14,4 +14,6 @@ services:
       - APACHE_RUN_GROUP=www-data
       - APACHE_DOCUMENT_ROOT=/var/www/html/public
     volumes:
-      - ./public:/var/www/html/public
+      - .:/var/www/html
+    command: >
+      bash -c "chown -R www-data:www-data /var/www/html && apache2-foreground"
