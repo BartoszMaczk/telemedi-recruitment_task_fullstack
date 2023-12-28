@@ -16,6 +16,11 @@ class ExchangeRateService
         $this->currencies = ['EUR', 'USD', 'CZK', 'IDR', 'BRL'];
     }
 
+    public function getCurrencies(): array
+    {
+        return $this->currencies;
+    }
+
     /**
      * @throws \Throwable
      */
@@ -39,7 +44,7 @@ class ExchangeRateService
             if ($requestDate === 'today') {
                 return $this->getYesterdayExchangeRate();
             }
-            throw new \Exception('Not Found: No data was found for the specified time range.');
+            return [];
         }
 
         $currencies = $this->extractCurrencies($response);

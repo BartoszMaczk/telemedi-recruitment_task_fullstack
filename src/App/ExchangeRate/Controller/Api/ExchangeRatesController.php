@@ -6,6 +6,7 @@ namespace App\ExchangeRate\Controller\Api;
 
 use App\ExchangeRate\Service\ExchangeRateService;
 use App\ExchangeRate\ValueObject\ExchangeRateDate;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,7 +28,8 @@ class ExchangeRatesController extends AbstractController
             return new JsonResponse($exchangeRates);
         } catch (\Throwable $e) {
             $logger->error($e->getMessage());
-            return new JsonResponse(['error' => $e->getMessage()], 500);
+            $code = $e instanceof InvalidArgumentException ? 422 : 500;
+            return new JsonResponse(['error' => $e->getMessage()], $code);
         }
     }
 

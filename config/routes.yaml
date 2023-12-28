@@ -3,6 +3,10 @@ api_exchange-rates:
     controller: App\ExchangeRate\Controller\Api\ExchangeRatesController::index
     methods: GET
 
+api_setupcheck:
+    path: /api/setup-check
+    controller: App\Web\Controller\DefaultController::setupCheck
+
 web_index:
     path: /{wildcard}
     defaults: {
