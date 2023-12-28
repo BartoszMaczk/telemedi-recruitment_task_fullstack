@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import '../css/app.css';
 import {DefaultLayout} from "./components/layouts/default/DefaultLayout";
-import {Home} from './components/pages/Home';
+import {Home} from './components/pages/home/Home';
 import {ExchangeRates} from "./components/pages/ExchangeRates";
 
 ReactDOM.render(
