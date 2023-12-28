@@ -8,7 +8,7 @@ export const useImage = (fileName, dirName = 'icons') => {
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const response = await import(`../images/${dirName}/${fileName}`)
+                const response = await import(`../../images/${dirName}/${fileName}`)
                 setImage(response.default)
             } catch (err) {
                 setError(err)

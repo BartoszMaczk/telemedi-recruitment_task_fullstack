@@ -62,12 +62,14 @@ class ExchangeRateService
     {
         return array_map(function ($currency) {
             if (in_array($currency['code'], ['EUR', 'USD'], true)) {
-                $currency['sell'] = $currency['mid'] + 0.07;
-                $currency['buy'] = $currency['mid'] + 0.05;
+                $sell = $currency['mid'] + 0.07;
+                $buy = $currency['mid'] + 0.05;
             } else {
-                $currency['sell'] = $currency['mid'] + 0.15;
-                $currency['buy'] = null;
+                $sell = $currency['mid'] + 0.15;
+                $buy = null;
             }
+            $currency['sell'] = $sell ? round($sell, 4) : null;
+            $currency['buy'] = $buy ? round($buy, 4) : null;
 
             return $currency;
         }, $currencies);

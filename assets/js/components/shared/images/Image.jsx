@@ -1,5 +1,5 @@
 import React from 'react';
-import {useImage} from "../../../../utils/importImage";
+import {useImage} from "../../../utils/importImage";
 import './Image.css';
 
 export const Image = ({className, name, dirName = 'icons', alt = 'icon', ...rest}) => {
