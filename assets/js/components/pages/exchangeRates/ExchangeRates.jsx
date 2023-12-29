@@ -17,7 +17,13 @@ export const ExchangeRates = () => {
     const [selectedDate, setSelectedDate] = useState(date || todayDate);
 
     useEffect(() => {
-        getDataList(selectedDate).then((data) => setDataList(data));
+        let isMounted = true;
+        getDataList(selectedDate).then((data) => {
+            if (isMounted) setDataList(data);
+        });
+        return () => {
+            isMounted = false
+        };
     }, [selectedDate]);
 
     const handleDateChange = (e) => {

@@ -3,11 +3,13 @@ import {useContext, useMemo} from "react";
 import {ErrorModalContext} from "../../contexts/ErrorModalContext";
 import {LoaderContext} from "../../contexts/LoaderContext";
 import {getPolishErrorMessage} from "../../utils/errorMessages";
+import {useHistory} from "react-router-dom";
 
 export const useApiBase = () => {
 
     const {showError} = useContext(ErrorModalContext);
     const {showLoader, hideLoader} = useContext(LoaderContext);
+    const history = useHistory();
     const responseBody = (response) => response.data
 
     const apiInstance = {
@@ -16,6 +18,7 @@ export const useApiBase = () => {
             return axios.get(url, config)
                 .then(responseBody)
                 .catch((error) => {
+                    history.push('/');
                     if (error.response && error.response.data && error.response.data.error) {
                         showError(getPolishErrorMessage(error.response.data.error));
                     } else {
