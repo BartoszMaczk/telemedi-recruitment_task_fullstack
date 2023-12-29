@@ -23,15 +23,24 @@
     background: #212529;
     color: #f1f1ff;
     width: auto;
-    cursor: pointer;
     font-weight: 700;
     border-radius: 5px;
     border-width: 2px;
     border-color: #323539;
+    position: relative;
+    padding-right: 28px;
 }
 
 .exchangeRatesPage__controls .exchangeRatesPage__controls__datePicker::-webkit-calendar-picker-indicator {
     filter: invert(1);
+    background-position: right center;
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    bottom: 0;
+    left: 0;
+    width: auto;
 }
 
 .exchangeRatesPage__content__table {
