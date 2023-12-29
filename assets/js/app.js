@@ -6,20 +6,23 @@ import {DefaultLayout} from "./components/layouts/default/DefaultLayout";
 import {Home} from './components/pages/home/Home';
 import {ExchangeRates} from "./components/pages/exchangeRates/ExchangeRates";
 import {LoaderProvider} from "./contexts/LoaderContext";
+import {ErrorModalProvider} from "./contexts/ErrorModalContext";
 
 ReactDOM.render(
     <LoaderProvider>
-        <Router>
-            <Switch>
-                <Route path="/kursy-walut/:date(\d{4}-\d{2}-\d{2})?">
-                    <DefaultLayout><ExchangeRates/></DefaultLayout>
-                </Route>
-                <Route path="/">
-                    <DefaultLayout><Home/></DefaultLayout>
-                </Route>
-                <Route><Redirect to={"/"}/></Route>
-            </Switch>
-        </Router>
+        <ErrorModalProvider>
+            <Router>
+                <Switch>
+                    <Route path="/kursy-walut/:date(\d{4}-\d{2}-\d{2})?">
+                        <DefaultLayout><ExchangeRates/></DefaultLayout>
+                    </Route>
+                    <Route path="/">
+                        <DefaultLayout><Home/></DefaultLayout>
+                    </Route>
+                    <Route><Redirect to={"/"}/></Route>
+                </Switch>
+            </Router>
+        </ErrorModalProvider>
     </LoaderProvider>
     , document.getElementById('root')
 );

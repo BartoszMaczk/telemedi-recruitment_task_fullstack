@@ -2,17 +2,18 @@
 
 namespace App\ExchangeRate\Service;
 
+use App\ExchangeRate\Dto\CurrencyDTO;
+use App\ExchangeRate\Repository\ExchangeRateRepository;
 use App\ExchangeRate\ValueObject\ExchangeRateDate;
-use Symfony\Component\HttpClient\HttpClient;
 
 class ExchangeRateService
 {
-    private $client;
+    private $repository;
     private $currencies;
 
-    public function __construct()
+    public function __construct(ExchangeRateRepository $repository)
     {
-        $this->client = HttpClient::create(['base_uri' => 'https://api.nbp.pl/api/exchangerates/tables/a/']);
+        $this->repository = $repository;
         $this->currencies = ['EUR', 'USD', 'CZK', 'IDR', 'BRL'];
     }
 
@@ -24,36 +25,23 @@ class ExchangeRateService
     /**
      * @throws \Throwable
      */
-    public function getYesterdayExchangeRate(): array
-    {
-        $yesterday = new \DateTime('-1 day');
-        return $this->getExchangeRates(new ExchangeRateDate($yesterday->format('Y-m-d')));
-    }
-
-    /**
-     * @throws \Throwable
-     */
     public function getExchangeRates(?ExchangeRateDate $date): array
     {
-        $requestDate = $date ? $date->getValue() : 'today';
-        $response = $this->client->request('GET', $requestDate);
-        $statusCode = $response->getStatusCode();
-        if ($statusCode === 400) {
-            throw new \Exception('Bad Request: The request was improperly formulated or exceeded the data limit.');
-        } elseif ($statusCode === 404) {
-            if ($requestDate === 'today') {
-                return $this->getYesterdayExchangeRate();
-            }
-            return [];
-        }
+        $currentExchangeRates = $this->repository->getCurrentExchangeRates();
+        $dateExchangeRates = $date ? $this->repository->getExchangeRatesByDate($date->getValue()) : $this->repository->getTodayCurrencyRates();
 
-        $currencies = $this->extractCurrencies($response);
-        return $this->addSellAndBuyValues($currencies);
+        $currentExchangeRates = $this->filterCurrencies($currentExchangeRates);
+        $currentExchangeRates = $this->addSellAndBuyValues($currentExchangeRates);
+
+        $dateExchangeRates = $this->filterCurrencies($dateExchangeRates);
+        $dateExchangeRates = $this->addSellAndBuyValues($dateExchangeRates);
+
+        return $this->prepareCurrenciesDTOs($currentExchangeRates, $dateExchangeRates);
     }
 
-    protected function extractCurrencies($response): array
+    protected function filterCurrencies($response): array
     {
-        return array_values(array_filter($response->toArray()[0]['rates'], function ($item) {
+        return array_values(array_filter($response, function ($item) {
             return in_array($item['code'], $this->currencies, true);
         }));
     }
@@ -68,10 +56,31 @@ class ExchangeRateService
                 $sell = $currency['mid'] + 0.15;
                 $buy = null;
             }
-            $currency['sell'] = $sell ? round($sell, 4) : null;
-            $currency['buy'] = $buy ? round($buy, 4) : null;
+
+            $sell = $sell ? round($sell, 4) : null;
+            $buy = $buy ? round($buy, 4) : null;
+
+            $currency['sellPrice'] = $sell;
+            $currency['buyPrice'] = $buy;
 
             return $currency;
         }, $currencies);
+    }
+
+    protected function prepareCurrenciesDTOs(array $currentExchangeRates, array $dateExchangeRates): array
+    {
+        return array_map(function ($code, $currentExchangeRate) use ($dateExchangeRates) {
+            $dateExchangeRate = $dateExchangeRates[$code] ?? null;
+
+            return new CurrencyDTO(
+                $currentExchangeRate['currency'],
+                $currentExchangeRate['code'],
+                $currentExchangeRate['mid'],
+                $dateExchangeRate ? $dateExchangeRate['sellPrice'] : null,
+                $dateExchangeRate ? $dateExchangeRate['buyPrice'] : null,
+                $currentExchangeRate['sellPrice'] ?? null,
+                $currentExchangeRate['buyPrice'] ?? null
+            );
+        }, array_keys($currentExchangeRates), $currentExchangeRates);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace ExchangeRate\Service;
 
+use App\ExchangeRate\Dto\CurrencyDTO;
 use App\ExchangeRate\Service\ExchangeRateService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -19,11 +20,12 @@ class ExchangeRateServiceTest extends WebTestCase
 
     private function assertCurrencyStructure(array $currency): void
     {
-        $this->assertArrayHasKey('currency', $currency);
-        $this->assertArrayHasKey('code', $currency);
-        $this->assertArrayHasKey('mid', $currency);
-        $this->assertArrayHasKey('sell', $currency);
-        $this->assertArrayHasKey('buy', $currency);
+        $reflectionClass = new \ReflectionClass(CurrencyDTO::class);
+        $properties = $reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC);
+
+        foreach ($properties as $property) {
+            $this->assertArrayHasKey($property->getName(), $currency);
+        }
     }
 
     public function testGetExchangeRates(): void
@@ -74,7 +76,7 @@ class ExchangeRateServiceTest extends WebTestCase
         $responseData = json_decode($response->getContent(), TRUE);
 
         $this->assertIsArray($responseData);
-        $this->assertCount(0, $responseData);
+        $this->assertCount(count($this->service->getCurrencies()), $responseData);
     }
 
     public function testGetExchangeRatesWithInvalidDate(): void

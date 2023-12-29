@@ -1,5 +1,43 @@
 .exchangeRatesPage {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    padding-top: 80px;
+    width: 100%;
+}
+
+.exchangeRatesPage__controls {
+    align-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.exchangeRatesPage__controls .exchangeRatesPage__controls__title {
+    color: #181818;
+    font-weight: 500;
+}
+
+.exchangeRatesPage__controls .exchangeRatesPage__controls__datePicker {
+    background: #212529;
+    color: #f1f1ff;
+    width: auto;
+    cursor: pointer;
+    font-weight: 700;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: #323539;
+}
+
+.exchangeRatesPage__controls .exchangeRatesPage__controls__datePicker::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.exchangeRatesPage__content__table {
+    overflow: auto;
+}
+
+.exchangeRatesPage__content__table > table {
+    min-width: 800px;
 }

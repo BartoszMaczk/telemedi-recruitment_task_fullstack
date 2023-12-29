@@ -18,3 +18,7 @@ main {
     padding: 0 16px;
     box-sizing: border-box;
 }
+
+main > * {
+    max-width: 100%;
+}

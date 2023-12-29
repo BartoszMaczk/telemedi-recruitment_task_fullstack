@@ -1,10 +1,13 @@
 import axios from "axios";
 import {useContext, useMemo} from "react";
+import {ErrorModalContext} from "../../contexts/ErrorModalContext";
 import {LoaderContext} from "../../contexts/LoaderContext";
+import {getPolishErrorMessage} from "../../utils/errorMessages";
 
 export const useApiBase = () => {
 
-    const {showLoader, hideLoader} = useContext(LoaderContext)
+    const {showError} = useContext(ErrorModalContext);
+    const {showLoader, hideLoader} = useContext(LoaderContext);
     const responseBody = (response) => response.data
 
     const apiInstance = {
@@ -13,9 +16,10 @@ export const useApiBase = () => {
             return axios.get(url, config)
                 .then(responseBody)
                 .catch((error) => {
-                    const errorCode = error.response.status;
-                    if (errorCode >= 500) {
-                        //     TODO:: handle error message
+                    if (error.response && error.response.data && error.response.data.error) {
+                        showError(getPolishErrorMessage(error.response.data.error));
+                    } else {
+                        showError(getPolishErrorMessage(error.message));
                     }
                     return error;
                 })
