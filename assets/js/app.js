@@ -8,8 +8,8 @@ import {ExchangeRates} from "./components/pages/exchangeRates/ExchangeRates";
 import {LoaderProvider} from "./contexts/LoaderContext";
 import {ErrorModalProvider} from "./contexts/ErrorModalContext";
 
-ReactDOM.render(
-    <LoaderProvider>
+export const App = () => {
+    return <LoaderProvider>
         <ErrorModalProvider>
             <Router>
                 <Switch>
@@ -24,6 +24,7 @@ ReactDOM.render(
             </Router>
         </ErrorModalProvider>
     </LoaderProvider>
-    , document.getElementById('root')
-);
+};
 
+
+ReactDOM.render(<App/>, document.getElementById('root'));
