@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Web\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ class DefaultController extends AbstractController
     public function index(): Response
     {
         return $this->render(
-            'exchange_rates/app-root.html.twig'
+            'pages/home.html.twig'
         );
     }
 
@@ -32,6 +32,4 @@ class DefaultController extends AbstractController
             ['Content-type' => 'application/json']
         );
     }
-
-
 }

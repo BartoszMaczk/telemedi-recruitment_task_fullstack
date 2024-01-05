@@ -1,0 +1,13 @@
+.header1 {
+    margin: 0 0 24px;
+    font-size: 72px;
+    line-height: 80px;
+    color: #181818;
+}
+
+.header1 a {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    color: inherit;
+}

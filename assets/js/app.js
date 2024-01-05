@@ -1,23 +1,30 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
-
-// any CSS you import will output into a single css file (app.css in this case)
-//import './css/app.css';
-
-// start the Stimulus application
-//import './bootstrap';
-
-
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import '../css/app.css';
-import Home from './components/Home';
+import {DefaultLayout} from "./components/layouts/default/DefaultLayout";
+import {Home} from './components/pages/home/Home';
+import {ExchangeRates} from "./components/pages/exchangeRates/ExchangeRates";
+import {LoaderProvider} from "./contexts/LoaderContext";
+import {ErrorModalProvider} from "./contexts/ErrorModalContext";
 
-ReactDOM.render(<Router><Home /></Router>, document.getElementById('root'));
+export const App = () => {
+    return <LoaderProvider>
+        <ErrorModalProvider>
+            <Router>
+                <Switch>
+                    <Route path="/kursy-walut/:date(\d{4}-\d{2}-\d{2})?">
+                        <DefaultLayout><ExchangeRates/></DefaultLayout>
+                    </Route>
+                    <Route path="/">
+                        <DefaultLayout><Home/></DefaultLayout>
+                    </Route>
+                    <Route><Redirect to={"/"}/></Route>
+                </Switch>
+            </Router>
+        </ErrorModalProvider>
+    </LoaderProvider>
+};
 
+
+ReactDOM.render(<App/>, document.getElementById('root'));

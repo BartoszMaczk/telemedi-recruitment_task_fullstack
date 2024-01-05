@@ -3,7 +3,20 @@ FROM php:7.2-apache
 WORKDIR /var/www/html
 
 RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install -y git curl zip libzip-dev
+RUN apt-get install -y git zip libzip-dev libssl-dev
+
+ARG CURL_VERSION=7.79.1
+
+RUN cd /tmp \
+    && curl -LO https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz \
+    && tar -xvzf curl-${CURL_VERSION}.tar.gz \
+    && cd curl-${CURL_VERSION} \
+    && ./configure --with-openssl \
+    && make \
+    && rm -rf /usr/local/include/curl \
+    && make install \
+    && ldconfig \
+    && rm -rf /tmp/curl-${CURL_VERSION}*
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -28,7 +41,5 @@ COPY ./000-default.conf /etc/apache2/sites-available/
 RUN a2enmod rewrite
 
 RUN service apache2 restart
-
-USER www-data
 
 EXPOSE 80 443

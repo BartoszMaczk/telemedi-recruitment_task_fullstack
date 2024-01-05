@@ -1,19 +1,17 @@
-#home:
-#  path: /
-#  defaults: { _controller: 'AppBundle\Controller\DefaultController::indexAction' }
-#  methods:  GET
-#
+api_exchange-rates:
+    path: /api/exchange-rates
+    controller: App\ExchangeRate\Controller\Api\ExchangeRatesController::index
+    methods: GET
 
-setupcheck:
+api_setupcheck:
     path: /api/setup-check
-    controller: App\Controller\DefaultController::setupCheck
+    controller: App\Web\Controller\DefaultController::setupCheck
 
-index:
+web_index:
     path: /{wildcard}
     defaults: {
-        _controller: App\Controller\DefaultController::index
+        _controller: App\Web\Controller\DefaultController::index
     }
     requirements:
         wildcard: .*
-    # controller: App\Controller\DefaultController::index
 

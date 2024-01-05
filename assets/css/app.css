@@ -1,3 +1,24 @@
 body {
-    background-color: lightgray;
+    background-color: #FFF7D4;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1440px;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+main > * {
+    max-width: 100%;
 }

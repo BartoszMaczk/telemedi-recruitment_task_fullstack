@@ -1,0 +1,9 @@
+.mainHeader {
+    background-color: #181818;
+}
+
+.mainHeader__content > .navbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+}

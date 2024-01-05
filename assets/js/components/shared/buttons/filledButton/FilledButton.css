@@ -1,0 +1,18 @@
+.filledButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 32px;
+    cursor: pointer;
+    background: #a2773b;
+    outline: none;
+    border: none;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, .8);
+}
+
+.filledButton:hover {
+    box-shadow: 0 8px 16px #eeaf56;
+}
